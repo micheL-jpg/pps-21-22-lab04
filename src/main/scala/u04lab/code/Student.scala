@@ -3,10 +3,12 @@ package u04lab.code
 import u04lab.code.List
 import u04lab.code.List.*
 
+import u04lab.code.Option.*
+
 trait Student:
   def name: String
   def year: Int
-  def enrolling(course: Course): Unit // the student participates to a Course
+  def enrolling(course: Course*): Unit // the student participates to a Course
   def courses: List[String] // names of course the student participates to
   def hasTeacher(teacher: String): Boolean // is the student participating to a course of this teacher?
 
@@ -23,11 +25,11 @@ object Course:
 case class CourseImpl(name: String, teacher: String) extends Course
 
 case class StudentImpl(name: String, year: Int) extends Student:
-  val listOfCourses: List[Course]
-
-  override def enrolling(course: Course): Unit = append(listOfCourses, Cons(course, Nil()))
-
+  var listOfCourses: List[Course] = Nil()
+  override def enrolling(course: Course*): Unit =
+    course foreach (c => listOfCourses = append(listOfCourses, Cons(c, Nil())))
   override def courses: List[String] = map(listOfCourses)(c => c.name)
+  override def hasTeacher(teacher: String): Boolean = !isEmpty(find(map(listOfCourses)(c => c.teacher))(t => t == teacher))
 
 @main def checkStudents(): Unit =
   val cPPS = Course("PPS", "Viroli")
@@ -36,8 +38,7 @@ case class StudentImpl(name: String, year: Int) extends Student:
   val s1 = Student("mario", 2015)
   val s2 = Student("gino", 2016)
   val s3 = Student("rino") // defaults to 2017
-  s1.enrolling(cPPS)
-  s1.enrolling(cPCD)
+  s1.enrolling(cPPS, cPCD)
   s2.enrolling(cPPS)
   s3.enrolling(cPPS)
   s3.enrolling(cPCD)
