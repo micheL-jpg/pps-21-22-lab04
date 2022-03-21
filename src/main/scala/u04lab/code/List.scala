@@ -1,8 +1,9 @@
 package u04lab.code
 
 import scala.annotation.tailrec
-import u04lab.code.Option.*
 import u04lab.code.Option
+import u04lab.code.Option.*
+
 // A generic linkedlist
 enum List[E]:
   case Cons(head: E, tail: List[E])

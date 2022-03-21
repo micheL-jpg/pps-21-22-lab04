@@ -1,6 +1,7 @@
 package u04lab.code
 
-import List.*
+import u04lab.code.List
+import u04lab.code.List.*
 
 trait Student:
   def name: String
@@ -14,10 +15,19 @@ trait Course:
   def teacher: String
 
 object Student:
-  def apply(name: String, year: Int = 2017): Student = ???
+  def apply(name: String, year: Int = 2017): Student = StudentImpl(name, year)
 
 object Course:
-  def apply(name: String, teacher: String): Course = ???
+  def apply(name: String, teacher: String): Course = CourseImpl(name, teacher)
+
+case class CourseImpl(name: String, teacher: String) extends Course
+
+case class StudentImpl(name: String, year: Int) extends Student:
+  val listOfCourses: List[Course]
+
+  override def enrolling(course: Course): Unit = append(listOfCourses, Cons(course, Nil()))
+
+  override def courses: List[String] = map(listOfCourses)(c => c.name)
 
 @main def checkStudents(): Unit =
   val cPPS = Course("PPS", "Viroli")
