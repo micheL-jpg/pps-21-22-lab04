@@ -11,6 +11,12 @@ enum List[E]:
 
 // a companion object (i.e., module) for List
 object List:
+
+  def apply[A](elements: A*): List[A] =
+    var l = Nil[A]()
+    elements foreach(e => l = append(l, Cons(e, Nil())))
+    l
+
   def sum(l: List[Int]): Int = l match
     case Cons(h, t) => h + sum(t)
     case _ => 0
@@ -61,4 +67,5 @@ object List:
     case _ => Nil()
 
   def take[A](list: List[A], n: Int): List[A] = reverse(drop(reverse(list), length(list) - n))
+
 end List
