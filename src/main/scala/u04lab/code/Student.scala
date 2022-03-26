@@ -27,9 +27,9 @@ case class CourseImpl(name: String, teacher: String) extends Course
 case class StudentImpl(name: String, year: Int) extends Student:
   var listOfCourses: List[Course] = Nil()
   override def enrolling(course: Course*): Unit =
-    course foreach (c => listOfCourses = append(listOfCourses, Cons(c, Nil())))
-  override def courses: List[String] = map(listOfCourses)(c => c.name)
-  override def hasTeacher(teacher: String): Boolean = !isEmpty(find(map(listOfCourses)(c => c.teacher))(t => t == teacher))
+    course foreach (c => listOfCourses = Cons(c, listOfCourses))
+  override def courses: List[String] = map(listOfCourses)(_.name)
+  override def hasTeacher(teacher: String): Boolean = !isEmpty(find(map(listOfCourses)(_.teacher))(_ == teacher))
 
 @main def checkStudents(): Unit =
   val cPPS = Course("PPS", "Viroli")

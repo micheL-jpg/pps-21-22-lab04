@@ -16,7 +16,7 @@ object List:
 
   def apply[A](elements: A*): List[A] =
     var l = Nil[A]()
-    elements foreach(e => l = append(l, Cons(e, Nil())))
+    elements.reverse foreach(e => l = Cons(e, l))
     l
 
   def sum(l: List[Int]): Int = l match
@@ -81,5 +81,5 @@ object sameTeacher:
     case _ => scala.Some(s)
 
   def unapply(l: List[Course]): scala.Option[String] = l match
-    case Cons(h, t) => _check(map(t)(c => c.teacher), h.teacher)
+    case Cons(h, t) => _check(map(t)(_.teacher), h.teacher)
     case _ => scala.None
