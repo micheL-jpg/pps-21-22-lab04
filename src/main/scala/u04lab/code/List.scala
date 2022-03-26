@@ -1,5 +1,7 @@
 package u04lab.code
 
+import u04lab.code.List.{Cons, map}
+
 import scala.annotation.tailrec
 import u04lab.code.Option
 import u04lab.code.Option.*
@@ -69,3 +71,15 @@ object List:
   def take[A](list: List[A], n: Int): List[A] = reverse(drop(reverse(list), length(list) - n))
 
 end List
+
+object sameTeacher:
+
+  @tailrec
+  private def _check(l: List[String], s: String): scala.Option[String] = l match
+    case Cons(head, tail) if head == s => _check(tail, s)
+    case Cons(head, tail) => scala.None
+    case _ => scala.Some(s)
+
+  def unapply(l: List[Course]): scala.Option[String] = l match
+    case Cons(h, t) => _check(map(t)(c => c.teacher), h.teacher)
+    case _ => scala.None
